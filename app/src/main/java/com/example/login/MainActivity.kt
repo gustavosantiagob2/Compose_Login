@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onSignUpClick = {
                                     navController.navigate("signUp")
+
                                 }
                             )
                         }
