@@ -7,10 +7,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,19 +18,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.login.User
-
+import com.example.login.models.User
 
 @Composable
-fun SingInScreen(
-    onSignInClick:(User) -> Unit
+fun SignInScreen(
+    onSignInClick: (User) -> Unit,
+    onSignUpClick: () -> Unit
 ) {
     Column {
-
         var username by remember {
             mutableStateOf("")
         }
@@ -38,50 +36,43 @@ fun SingInScreen(
             mutableStateOf("")
         }
         TextField(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
             value = username,
             onValueChange = { newValue ->
                 username = newValue
             },
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
             label = {
-                Text(text = "Usuário")
+                Text("Usuário")
             },
-            //Icones que ficam na esquerda
-            leadingIcon = @Composable {
+            leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "usuário"
+                    contentDescription = "pessoa que representa usuário"
                 )
             }
         )
         TextField(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
             value = password,
             onValueChange = {
                 password = it
             },
-            visualTransformation = PasswordVisualTransformation(),
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
             label = {
-                Text(text = "Entrar")
+                Text("Senha")
             },
+            visualTransformation = PasswordVisualTransformation(),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Password,
-                    contentDescription = "Representação de senha "
+                    contentDescription = "representação de senha"
                 )
             }
-
         )
         Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                Color(Color.Blue.value)
-            ),
             onClick = {
                 onSignInClick(
                     User(
@@ -89,38 +80,30 @@ fun SingInScreen(
                         password
                     )
                 )
-            })
-        {
+            },
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+        ) {
             Text(text = "Entrar")
         }
-        val mainButtonColor = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = MaterialTheme.colorScheme.surface
-        )
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = mainButtonColor,
-            onClick = {
-                onSignInClick(
-                    User(
-                        username,
-                        password
-                    )
-                )
-            })
-        {
-            Text(
-                text = "Cadastrar",
-                color = Color.Blue
-            )
-            Color(Color.White.value)
+        TextButton(
+            onClick = { onSignUpClick() },
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            Text(text = "Cadastrar")
         }
     }
 }
 
-@Preview(showSystemUi = true)
+
+@Preview
 @Composable
-private fun AuthScreenView() {
-    SingInScreen{}
+fun SignInScreenPreview() {
+    SignInScreen(
+        onSignInClick = {},
+        onSignUpClick = {}
+    )
 }
